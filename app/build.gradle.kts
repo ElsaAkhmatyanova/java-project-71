@@ -1,16 +1,11 @@
-dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-}
-
-plugins {
-    id("java")
-}
-
 plugins {
     id("com.github.ben-manes.versions") version "0.50.0"
     application
     checkstyle
+}
+
+application {
+    mainClass = "hexlet.code.App"
 }
 
 group = "hexlet.code"
@@ -20,6 +15,6 @@ repositories {
     mavenCentral()
 }
 
-tasks.test {
-    useJUnitPlatform()
+dependencies {
+    implementation("org.apache.commons:commons-math3:3.6.1")
 }
