@@ -6,4 +6,4 @@
 
 ## Примеры запуска
 Сравнение двух json-файлов:
-![gendiffJsonFiles.PNG](image/gendiffJsonFiles.PNG)
+![gendiffJsonFiles.PNG](images/gendiffJsonFiles.PNG)
