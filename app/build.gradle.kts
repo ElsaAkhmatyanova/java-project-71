@@ -18,4 +18,5 @@ repositories {
 dependencies {
     implementation("org.apache.commons:commons-math3:3.6.1")
     implementation ("info.picocli:picocli:4.7.7")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
 }
