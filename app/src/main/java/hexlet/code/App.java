@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 @Command(
         name = "gendiff",
@@ -17,7 +18,7 @@ import java.util.Map;
         version = "gendiff 1.0",
         description = "Compares two configuration files and shows a difference."
 )
-public class App implements Runnable {
+public class App implements Callable<Integer> {
 
     @Option(
             names = {"-f", "--format"},
@@ -34,27 +35,19 @@ public class App implements Runnable {
     private String filepath2;
 
     @Override
-    public void run() {
-        System.out.printf("Comparing files: %s and %s using '%s' format%n", filepath1, filepath2, format);
+    public Integer call() {
+        try {
+            String diff = Differ.generate(filepath1, filepath2);
+            System.out.println(diff);
+            return 0;
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            return 1;
+        }
     }
 
     public static void main(String[] args) throws Exception {
         int exitCode = new CommandLine(new App()).execute(args);
-
-        String readFile1Path = "src/main/resources/file1.json";
-        Path file1AbsPath = Paths.get(readFile1Path).toAbsolutePath().normalize();
-        if (!Files.exists(file1AbsPath)) {
-            throw new Exception("File '" + file1AbsPath + "' does not exist");
-        }
-        String file1Content = Files.readString(file1AbsPath);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> parsedFile1Map
-                = objectMapper.readValue(file1Content, new TypeReference<Map<String,Object>>(){});
-
-        System.out.println(file1Content);
-        System.out.println(parsedFile1Map);
-
         System.exit(exitCode);
     }
 }
