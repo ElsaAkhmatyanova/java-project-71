@@ -18,6 +18,9 @@ run-dist:
 run:
 	./gradlew run
 
+gendiff:
+	java -jar build/libs/app-1.0-SNAPSHOT-all.jar
+
 test:
 	./gradlew test
 
