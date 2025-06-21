@@ -8,7 +8,7 @@ plugins {
     jacoco
     id("com.github.ben-manes.versions") version "0.50.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("org.sonarqube") version "4.4.1.3373"
+    id("org.sonarqube") version "6.2.0.5505"
     id("io.freefair.lombok") version "8.6"
 }
 
@@ -48,27 +48,20 @@ checkstyle {
 
 tasks.test {
     useJUnitPlatform()
-    testLogging {
-        exceptionFormat = TestExceptionFormat.FULL
-        events = setOf(TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED)
-        showStandardStreams = true
-    }
+    finalizedBy(tasks.jacocoTestReport)
+
 }
 
-tasks.named<JacocoReport>("jacocoTestReport") {
-    dependsOn(tasks.test)
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-    }
+tasks.getByName("run", JavaExec::class) {
+    standardInput = System.`in`
 }
 
-sonarqube {
+tasks.jacocoTestReport { reports { xml.required.set(true) } }
+
+sonar {
     properties {
         property("sonar.projectKey", "ElsaAkhmatyanova_java-project-71")
-        property("sonar.organization", "hexlet")
+        property("sonar.organization", "elsaakhmatyanova")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.login", System.getenv("SONAR_TOKEN"))
-        property("sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
