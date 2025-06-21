@@ -20,9 +20,12 @@ jobs:
           java-version: 21
           distribution: 'temurin' # Alternative distribution options are available
       - name: Execute Gradle build
-        working-directory: app
         run: |
           ./gradlew build
+
+      - name: Generate coverage report
+        run: make report
+
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
@@ -36,7 +39,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
       - name: Build and analyze
-        working-directory: app
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew build sonar --info
