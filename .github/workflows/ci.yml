@@ -1,10 +1,8 @@
-name: SonarQube
+name: ci
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, synchronize, reopened]
+  -push
+  -pull_request
+
 jobs:
   build:
     name: Build and analyze
@@ -18,6 +16,10 @@ jobs:
         with:
           java-version: 21
           distribution: 'zulu' # Alternative distribution options are available
+      - name: Execute Gradle build
+        working-directory: app
+        run: |
+          ./gradlew build
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
@@ -31,6 +33,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
       - name: Build and analyze
+        working-directory: app
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew build sonar --info
