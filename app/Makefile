@@ -28,10 +28,6 @@ test:
 report:
 	./gradlew jacocoTestReport
 
-check:
-    ./gradlew checkstyleMain
-	./gradlew checkstyleTest
-
 lint:
 	./gradlew checkstyleMain
 
