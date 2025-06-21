@@ -19,10 +19,10 @@ application {
 group = "hexlet.code"
 version = "1.0-SNAPSHOT"
 
-/*java {
+java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
-}*/
+}
 
 repositories {
     mavenCentral()
