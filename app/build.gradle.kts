@@ -10,6 +10,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("org.sonarqube") version "6.2.0.5505"
     id("io.freefair.lombok") version "8.6"
+    id("com.diffplug.spotless") version "6.25.0"
 }
 
 application {
@@ -63,5 +64,12 @@ sonar {
         property("sonar.projectKey", "ElsaAkhmatyanova_java-project-71")
         property("sonar.organization", "elsaakhmatyanova")
         property("sonar.host.url", "https://sonarcloud.io")
+    }
+}
+
+spotless {
+    java {
+        googleJavaFormat()
+        target("**/*.java")
     }
 }
