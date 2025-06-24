@@ -69,7 +69,7 @@ sonar {
 
 spotless {
     java {
-        googleJavaFormat()
+        eclipse().configFile("config/eclipse-java-formatter.xml")
         target("**/*.java")
     }
 }
