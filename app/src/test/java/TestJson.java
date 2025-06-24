@@ -13,8 +13,7 @@ public class TestJson {
         Path temp1 = Files.createTempFile("file1", ".json");
         Path temp2 = Files.createTempFile("file2", ".json");
 
-        try (InputStream is1 = getClass().getClassLoader().getResourceAsStream("file1.json");
-             InputStream is2 = getClass().getClassLoader().getResourceAsStream("file2.json")) {
+        try (InputStream is1 = getClass().getClassLoader().getResourceAsStream("file1.json"); InputStream is2 = getClass().getClassLoader().getResourceAsStream("file2.json")) {
             Files.copy(is1, temp1, StandardCopyOption.REPLACE_EXISTING);
             Files.copy(is2, temp2, StandardCopyOption.REPLACE_EXISTING);
         }
