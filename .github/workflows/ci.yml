@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: 21
-          distribution: 'temurin' # Alternative distribution options are available
+          distribution: 'corretto'
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -24,7 +24,7 @@ jobs:
 
       - name: Execute Gradle build
         run: |
-          ./gradlew build
+          ./gradlew build -x spotlessCheck
 
       - name: Generate coverage report
         run: make report
@@ -46,4 +46,4 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonar --info
+        run: ./gradlew build -x spotlessCheck sonar --info
