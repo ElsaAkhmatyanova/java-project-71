@@ -1,12 +1,13 @@
 package hexlet.code;
 
-import hexlet.code.parsers.JsonParser;
+import hexlet.code.formatters.Formatter;
+import hexlet.code.formatters.JsonFormat;
 import java.util.*;
 
 public class Differ {
     public static String generate(String filepath1, String filepath2) throws Exception {
-        Map<String, Object> map1 = JsonParser.parse(filepath1);
-        Map<String, Object> map2 = JsonParser.parse(filepath2);
+        Map<String, Object> map1 = JsonFormat.parse(filepath1);
+        Map<String, Object> map2 = JsonFormat.parse(filepath2);
 
         List<DiffEntry> diffs = buildDiff(map1, map2);
 
@@ -28,14 +29,14 @@ public class Differ {
             Object val2 = map2.get(key);
 
             if (inFirst && !inSecond) {
-                result.add(new DiffEntry(key, val1, null, DiffEntry.Status.REMOVED));
+                result.add(new DiffEntry(key, val1, null, StatusEnum.REMOVED));
             } else if (!inFirst && inSecond) {
-                result.add(new DiffEntry(key, null, val2, DiffEntry.Status.ADDED));
+                result.add(new DiffEntry(key, null, val2, StatusEnum.ADDED));
             } else {
                 if (Objects.equals(val1, val2)) {
-                    result.add(new DiffEntry(key, val1, val2, DiffEntry.Status.UNCHANGED));
+                    result.add(new DiffEntry(key, val1, val2, StatusEnum.UNCHANGED));
                 } else {
-                    result.add(new DiffEntry(key, val1, val2, DiffEntry.Status.CHANGED));
+                    result.add(new DiffEntry(key, val1, val2, StatusEnum.CHANGED));
                 }
             }
         }
