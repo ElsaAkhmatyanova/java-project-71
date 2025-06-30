@@ -5,39 +5,28 @@ import hexlet.code.formatters.JsonFormat;
 import java.util.*;
 
 public class Differ {
-    public static String generate(String filepath1, String filepath2) throws Exception {
-        Map<String, Object> map1 = JsonFormat.parse(filepath1);
-        Map<String, Object> map2 = JsonFormat.parse(filepath2);
+    public static List<DiffEntry> generate(String filepath1, String filepath2) throws Exception {
+        Map<String, Object> data1 = Parser.parseFromFile(filepath1);
+        Map<String, Object> data2 = Parser.parseFromFile(filepath2);
 
-        List<DiffEntry> diffs = buildDiff(map1, map2);
-
-        Formatter formatter = new FormatterStyle();
-        return formatter.format(diffs);
-    }
-
-    private static List<DiffEntry> buildDiff(Map<String, Object> map1, Map<String, Object> map2) {
         Set<String> allKeys = new TreeSet<>();
-        allKeys.addAll(map1.keySet());
-        allKeys.addAll(map2.keySet());
+        allKeys.addAll(data1.keySet());
+        allKeys.addAll(data2.keySet());
 
         List<DiffEntry> result = new ArrayList<>();
 
         for (String key : allKeys) {
-            boolean inFirst = map1.containsKey(key);
-            boolean inSecond = map2.containsKey(key);
-            Object val1 = map1.get(key);
-            Object val2 = map2.get(key);
+            Object val1 = data1.get(key);
+            Object val2 = data2.get(key);
 
-            if (inFirst && !inSecond) {
-                result.add(new DiffEntry(key, val1, null, StatusEnum.REMOVED));
-            } else if (!inFirst && inSecond) {
-                result.add(new DiffEntry(key, null, val2, StatusEnum.ADDED));
+            if (!data2.containsKey(key)) {
+                result.add(new DiffEntry(key, StatusEnum.REMOVED.name(), val1, null));
+            } else if (!data1.containsKey(key)) {
+                result.add(new DiffEntry(key, StatusEnum.ADDED.name(), null, val2));
+            } else if (!Objects.equals(val1, val2)) {
+                result.add(new DiffEntry(key, StatusEnum.ADDED.name(), val1, val2));
             } else {
-                if (Objects.equals(val1, val2)) {
-                    result.add(new DiffEntry(key, val1, val2, StatusEnum.UNCHANGED));
-                } else {
-                    result.add(new DiffEntry(key, val1, val2, StatusEnum.CHANGED));
-                }
+                result.add(new DiffEntry(key, StatusEnum.UPDATED.name(), val1, null));
             }
         }
         return result;
