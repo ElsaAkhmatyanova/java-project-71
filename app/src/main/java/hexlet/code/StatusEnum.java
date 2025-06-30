@@ -4,5 +4,5 @@ public enum StatusEnum {
     ADDED,
     REMOVED,
     UNCHANGED,
-    CHANGED
+    UPDATED
 }
