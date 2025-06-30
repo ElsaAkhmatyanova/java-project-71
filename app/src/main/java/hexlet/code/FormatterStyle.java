@@ -1,5 +1,7 @@
 package hexlet.code;
 
+import hexlet.code.formatters.Formatter;
+
 import java.util.List;
 
 public class FormatterStyle implements Formatter {
