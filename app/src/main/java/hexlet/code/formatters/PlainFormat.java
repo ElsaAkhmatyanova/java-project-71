@@ -1,7 +1,6 @@
 package hexlet.code.formatters;
 
 import hexlet.code.DiffEntry;
-
 import java.util.List;
 
 public class PlainFormat implements Formatter {
@@ -16,14 +15,26 @@ public class PlainFormat implements Formatter {
 
             switch (entry.getStatus()) {
                 case REMOVED -> result.append("Property '").append(key).append("' was removed\n");
-                case ADDED -> result.append("Property '").append(key)
-                        .append("' was added with value: ").append(stringify(newValue)).append("\n");
-                case UPDATED -> result.append("Property '").append(key)
-                        .append("' was updated. From ")
-                        .append(stringify(oldValue)).append(" to ")
-                        .append(stringify(newValue)).append("\n");
-                case UNCHANGED -> {
+                case ADDED -> {
+                    result
+                            .append("Property '")
+                            .append(key)
+                            .append("' was added with value: ")
+                            .append(stringify(newValue))
+                            .append("\n");
                 }
+                case UPDATED -> {
+                    result
+                            .append("Property '")
+                            .append(key)
+                            .append("' was updated. From ")
+                            .append(stringify(oldValue))
+                            .append(" to ")
+                            .append(stringify(newValue))
+                            .append("\n");
+                }
+                case UNCHANGED -> {}
+                default -> throw new IllegalStateException("Unknown status: " + entry.getStatus());
             }
         }
 

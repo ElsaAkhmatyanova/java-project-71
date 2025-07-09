@@ -23,13 +23,13 @@ public class Differ {
             Object val2 = data2.get(key);
 
             if (!data2.containsKey(key)) {
-                result.add(new DiffEntry(key, StatusEnum.REMOVED.name(), val1, null));
+                result.add(new DiffEntry(key, StatusEnum.REMOVED, val1, null));
             } else if (!data1.containsKey(key)) {
-                result.add(new DiffEntry(key, StatusEnum.ADDED.name(), null, val2));
+                result.add(new DiffEntry(key, StatusEnum.ADDED, null, val2));
             } else if (!Objects.equals(val1, val2)) {
-                result.add(new DiffEntry(key, StatusEnum.ADDED.name(), val1, val2));
+                result.add(new DiffEntry(key, StatusEnum.ADDED, val1, val2));
             } else {
-                result.add(new DiffEntry(key, StatusEnum.UPDATED.name(), val1, null));
+                result.add(new DiffEntry(key, StatusEnum.UPDATED, val1, null));
             }
         }
         return result;

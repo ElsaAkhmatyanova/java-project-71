@@ -74,7 +74,9 @@ sonar {
 
 spotless {
     java {
-        eclipse().configFile("config/eclipse-java-formatter.xml")
+        googleJavaFormat()
+        indentWithTabs(2)
+        indentWithSpaces(4)
         target("**/*.java")
     }
 }

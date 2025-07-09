@@ -1,7 +1,6 @@
 package hexlet.code.formatters;
 
 import hexlet.code.DiffEntry;
-
 import java.util.List;
 
 public class StylishFormat implements Formatter {
@@ -25,6 +24,7 @@ public class StylishFormat implements Formatter {
                         result.append("  - ").append(key).append(": ").append(stringify(oldValue)).append("\n");
                 case ADDED ->
                         result.append("  + ").append(key).append(": ").append(stringify(newValue)).append("\n");
+                default -> throw new IllegalStateException("Unknown status: " + entry.getStatus());
             }
         }
 
