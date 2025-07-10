@@ -32,10 +32,8 @@ public class App implements Callable<Integer> {
     @Override
     public Integer call() {
         try {
-            List<DiffEntry> diff = Differ.generate(filepath1, filepath2);
-            Formatter formatter = FormatterSelection.getFormatter(format);
-            String formatterResult = formatter.format(diff);
-            System.out.println(formatterResult);
+            String diffResult = Differ.generate(filepath1, filepath2, format);
+            System.out.println(diffResult);
             return 0;
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
