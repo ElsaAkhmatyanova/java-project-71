@@ -1,5 +1,8 @@
 package hexlet.code;
 
+import hexlet.code.formatters.Formatter;
+import hexlet.code.formatters.FormatterSelection;
+import java.util.List;
 import java.util.concurrent.Callable;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -29,8 +32,10 @@ public class App implements Callable<Integer> {
     @Override
     public Integer call() {
         try {
-            String diff = Differ.generate(filepath1, filepath2).toString();
-            System.out.println(diff);
+            List<DiffEntry> diff = Differ.generate(filepath1, filepath2);
+            Formatter formatter = FormatterSelection.getFormatter(format);
+            String formatterResult = formatter.format(diff);
+            System.out.println(formatterResult);
             return 0;
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
