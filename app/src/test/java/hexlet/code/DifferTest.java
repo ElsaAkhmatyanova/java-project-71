@@ -5,18 +5,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Stream;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class DifferTest {
-    private static final String DIFF_RESULT_JSON_FROM_JSON_FILE =
-            readFileToStringFromResources("fixtures/expected_results/json_result_for_json_file.txt");
-    private static final String DIFF_RESULT_PLAIN_FROM_JSON_FILE =
-            readFileToStringFromResources("fixtures/expected_results/plain_result_for_json_file.txt");
-    private static final String DIFF_RESULT_STYLISH_FROM_JSON_FILE =
-            readFileToStringFromResources("fixtures/expected_results/stylish_result_for_json_file.txt");
-    private static final String DIFF_RESULT_STYLISH_FROM_YML_FILE =
-            readFileToStringFromResources("fixtures/expected_results/stylish_result_for_yml_file.txt");
+    @Builder
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class TestCase {
+        private String file1;
+        private String file2;
+        private String format;
+        private String expectedResultFile;
+    }
 
     private static String readFileToStringFromResources(String resourcesFilePath) {
         try {
@@ -36,63 +44,46 @@ class DifferTest {
         }
     }
 
-    @Test
-    @SneakyThrows
-    void testStylishFormatWithJsonFile() {
-        Path filePath1 = getResourseFilePath("fixtures/files/file1.json");
-        Path filePath2 = getResourseFilePath("fixtures/files/file2.json");
-        String diffResult =
-                Differ.generate(
-                        filePath1.toAbsolutePath().normalize().toString(),
-                        filePath2.toAbsolutePath().normalize().toString(),
-                        "stylish");
-        assertEquals(
-                DIFF_RESULT_STYLISH_FROM_JSON_FILE.trim().replaceAll("\\s+", ""),
-                diffResult.trim().replaceAll("\\s+", ""));
+    static Stream<TestCase> provideDiffTestCases() {
+        return Stream.of(
+                TestCase.builder()
+                        .file1("fixtures/files/file1.json")
+                        .file2("fixtures/files/file2.json")
+                        .format("stylish")
+                        .expectedResultFile("fixtures/expected_results/stylish_result_for_json_file.txt")
+                        .build(),
+                TestCase.builder()
+                        .file1("fixtures/files/file1.json")
+                        .file2("fixtures/files/file2.json")
+                        .format("plain")
+                        .expectedResultFile("fixtures/expected_results/plain_result_for_json_file.txt")
+                        .build(),
+                TestCase.builder()
+                        .file1("fixtures/files/file1.json")
+                        .file2("fixtures/files/file2.json")
+                        .format("json")
+                        .expectedResultFile("fixtures/expected_results/json_result_for_json_file.txt")
+                        .build(),
+                TestCase.builder()
+                        .file1("fixtures/files/file1.yml")
+                        .file2("fixtures/files/file2.yml")
+                        .format("stylish")
+                        .expectedResultFile("fixtures/expected_results/stylish_result_for_yml_file.txt")
+                        .build());
     }
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("provideDiffTestCases")
     @SneakyThrows
-    void testPlainFormatWithJsonFile() {
-        Path filePath1 = getResourseFilePath("fixtures/files/file1.json");
-        Path filePath2 = getResourseFilePath("fixtures/files/file2.json");
-        String diffResult =
+    void testGenerateDiff(TestCase testCase) {
+        Path filePath1 = getResourseFilePath(testCase.file1);
+        Path filePath2 = getResourseFilePath(testCase.file2);
+        String expected = readFileToStringFromResources(testCase.expectedResultFile);
+        String actual =
                 Differ.generate(
                         filePath1.toAbsolutePath().normalize().toString(),
                         filePath2.toAbsolutePath().normalize().toString(),
-                        "plain");
-        assertEquals(
-                DIFF_RESULT_PLAIN_FROM_JSON_FILE.trim().replaceAll("\\s+", ""),
-                diffResult.trim().replaceAll("\\s+", ""));
-    }
-
-    @Test
-    @SneakyThrows
-    void testJsonFormatWithJsonFile() {
-        Path filePath1 = getResourseFilePath("fixtures/files/file1.json");
-        Path filePath2 = getResourseFilePath("fixtures/files/file2.json");
-        String diffResult =
-                Differ.generate(
-                        filePath1.toAbsolutePath().normalize().toString(),
-                        filePath2.toAbsolutePath().normalize().toString(),
-                        "json");
-        assertEquals(
-                DIFF_RESULT_JSON_FROM_JSON_FILE.trim().replaceAll("\\s+", ""),
-                diffResult.trim().replaceAll("\\s+", ""));
-    }
-
-    @Test
-    @SneakyThrows
-    void testStylishFormatWithYmlFile() {
-        Path filePath1 = getResourseFilePath("fixtures/files/file1.yml");
-        Path filePath2 = getResourseFilePath("fixtures/files/file2.yml");
-        String diffResult =
-                Differ.generate(
-                        filePath1.toAbsolutePath().normalize().toString(),
-                        filePath2.toAbsolutePath().normalize().toString(),
-                        "stylish");
-        assertEquals(
-                DIFF_RESULT_STYLISH_FROM_YML_FILE.trim().replaceAll("\\s+", ""),
-                diffResult.trim().replaceAll("\\s+", ""));
+                        testCase.format);
+        assertEquals(expected.trim().replaceAll("\\s+", ""), actual.trim().replaceAll("\\s+", ""));
     }
 }
