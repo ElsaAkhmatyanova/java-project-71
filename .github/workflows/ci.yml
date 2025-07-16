@@ -3,22 +3,31 @@ on: [push, pull_request]
 
 jobs:
   build:
+    name: Build and analyze
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: app
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Java
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          java-version: 21
+          distribution: 'corretto'
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           fetch-depth: 0
+
+      - name: Execute Gradle build
+        run: |
+          ./gradlew build -x spotlessCheck
+
+      - name: Generate coverage report
+        run: make report
 
       - name: Cache SonarQube packages
         uses: actions/cache@v4
@@ -31,44 +40,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
-      - name: Build project with debug output
-        working-directory: app
-        run: |
-          ./gradlew clean build --stacktrace --info
-
-      - name: Generate coverage report
-        working-directory: app
-        run: |
-          ./gradlew jacocoTestReport --stacktrace --info
-
-      - name: List JaCoCo reports
-        working-directory: app
-        run: |
-          echo "Checking JaCoCo output"
-          find build/reports -type f || echo "No reports found"
-
-      - name: Show Sonar properties
-        working-directory: app
-        run: |
-          echo "SONAR_TOKEN is set: ${SONAR_TOKEN:+yes}"
-          grep "sonar" build.gradle.kts || echo "No sonar config in build.gradle.kts"
-
-      - name: Run SonarCloud analysis with debug
-        working-directory: app
-        continue-on-error: true
+      - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          ./gradlew sonar --stacktrace --info
-
-      - name: Upload logs on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gradle-logs
-          path: |
-            app/build/reports
-            app/build/*.log
+        run: ./gradlew build -x spotlessCheck sonar --debug
