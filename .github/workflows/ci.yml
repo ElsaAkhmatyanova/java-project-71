@@ -46,4 +46,4 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build -x spotlessCheck sonar --debug
+        run: ./gradlew build -x spotlessCheck sonar --info
