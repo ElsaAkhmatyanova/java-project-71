@@ -1,8 +1,5 @@
 package hexlet.code;
 
-import hexlet.code.formatters.Formatter;
-import hexlet.code.formatters.FormatterSelection;
-import java.util.List;
 import java.util.concurrent.Callable;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
