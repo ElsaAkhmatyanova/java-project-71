@@ -1,14 +1,13 @@
 package hexlet.code;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 class ParserTest {
 
@@ -51,9 +50,9 @@ class ParserTest {
         tempFile = Files.createTempFile("test", ".txt");
         Files.writeString(tempFile, txtContent);
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-                Parser.parseFromFile(tempFile.toString())
-        );
+        IllegalArgumentException exception =
+                assertThrows(
+                        IllegalArgumentException.class, () -> Parser.parseFromFile(tempFile.toString()));
 
         assertEquals("Unsupported format: txt", exception.getMessage());
     }
