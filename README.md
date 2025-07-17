@@ -23,13 +23,17 @@
 ## Примеры запуска
 
 Пример вывода помощи
+
 ![help_example.png](images/help_example.png)
 
 Пример сравнения двух json файлов (с дефолтным stylish форматом вывода)
+
 ![compare_two_json_files_default_stylish.png](images/compare_two_json_files_default_stylish.png)
 
 Пример сравнения двух yml файлов (с дефолтным stylish форматом вывода)
+
 ![compare_two_yml_files_default_stylish.png](images/compare_two_yml_files_default_stylish.png)
 
 Пример сравнения двух файлов с выбранным форматом вывода результата
+
 ![compare_two_json_files_plain.png](images/compare_two_json_files_plain.png)
