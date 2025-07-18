@@ -15,6 +15,11 @@ public class Differ {
         return getFormattedDiff(diffEntryList, format);
     }
 
+    public static String generate(String filepath1, String filepath2)
+            throws Exception {
+        return generate(filepath1, filepath2, "stylish");
+    }
+
     private static List<DiffEntry> getDiff(String filepath1, String filepath2) throws Exception {
         Map<String, Object> data1 = Parser.parseFromFile(filepath1);
         Map<String, Object> data2 = Parser.parseFromFile(filepath2);
