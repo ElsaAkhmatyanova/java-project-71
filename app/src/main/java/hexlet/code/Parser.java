@@ -3,6 +3,7 @@ package hexlet.code;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,9 +16,12 @@ public class Parser {
     public static Map<String, Object> parseFromFile(String path) throws IOException {
         String content = Files.readString(Path.of(path));
         String ext = path.substring(path.lastIndexOf('.') + 1);
+        TypeReference<Map<String, Object>> typeRef = new TypeReference<>() {
+            // type ref
+        };
         return switch (ext) {
-            case "json" -> JSON_MAPPER.readValue(content, new TypeReference<>() {});
-            case "yml", "yaml" -> YAML_MAPPER.readValue(content, new TypeReference<>() {});
+            case "json" -> JSON_MAPPER.readValue(content, typeRef);
+            case "yml", "yaml" -> YAML_MAPPER.readValue(content, typeRef);
             default -> throw new IllegalArgumentException("Unsupported format: " + ext);
         };
     }

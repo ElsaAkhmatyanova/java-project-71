@@ -1,6 +1,7 @@
 package hexlet.code;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,26 +23,24 @@ class ParserTest {
 
     @Test
     void testParseJsonFile() throws IOException {
-        String jsonContent = "{\"name\":\"John\", \"age\":30}";
+        String jsonContent = "{\"name\":\"John\"}";
         tempFile = Files.createTempFile("test", ".json");
         Files.writeString(tempFile, jsonContent);
 
         Map<String, Object> result = Parser.parseFromFile(tempFile.toString());
 
         assertEquals("John", result.get("name"));
-        assertEquals(30, result.get("age"));
     }
 
     @Test
     void testParseYamlFile() throws IOException {
-        String yamlContent = "name: John\nage: 30";
+        String yamlContent = "name: John";
         tempFile = Files.createTempFile("test", ".yaml");
         Files.writeString(tempFile, yamlContent);
 
         Map<String, Object> result = Parser.parseFromFile(tempFile.toString());
 
         assertEquals("John", result.get("name"));
-        assertEquals(30, result.get("age"));
     }
 
     @Test

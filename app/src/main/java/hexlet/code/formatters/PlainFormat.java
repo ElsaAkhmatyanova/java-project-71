@@ -3,7 +3,7 @@ package hexlet.code.formatters;
 import hexlet.code.DiffEntry;
 import java.util.List;
 
-public class PlainFormat implements Formatter {
+public final class PlainFormat implements Formatter {
     @Override
     public String format(List<DiffEntry> diffEntries) {
         StringBuilder result = new StringBuilder();
@@ -33,7 +33,9 @@ public class PlainFormat implements Formatter {
                             .append(stringify(newValue))
                             .append("\n");
                 }
-                case UNCHANGED -> {}
+                case UNCHANGED -> {
+                    // no need action
+                }
                 default -> throw new IllegalStateException("Unknown status: " + entry.getStatus());
             }
         }

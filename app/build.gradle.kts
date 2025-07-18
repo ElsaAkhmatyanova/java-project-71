@@ -1,7 +1,3 @@
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.api.tasks.testing.logging.TestLogEvent
-import org.gradle.testing.jacoco.tasks.JacocoReport
-
 plugins {
     application
     checkstyle
@@ -9,7 +5,6 @@ plugins {
     id("com.github.ben-manes.versions") version "0.50.0"
     id("org.sonarqube") version "6.2.0.5505"
     id("io.freefair.lombok") version "8.6"
-    id("com.diffplug.spotless") version "6.25.0"
 }
 
 application {
@@ -68,14 +63,5 @@ sonar {
         property("sonar.projectKey", "ElsaAkhmatyanova_java-project-71")
         property("sonar.organization", "elsaakhmatyanova")
         property("sonar.host.url", "https://sonarcloud.io")
-    }
-}
-
-spotless {
-    java {
-        googleJavaFormat()
-        indentWithTabs(2)
-        indentWithSpaces(4)
-        target("**/*.java")
     }
 }

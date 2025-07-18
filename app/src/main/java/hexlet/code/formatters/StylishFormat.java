@@ -3,7 +3,7 @@ package hexlet.code.formatters;
 import hexlet.code.DiffEntry;
 import java.util.List;
 
-public class StylishFormat implements Formatter {
+public final class StylishFormat implements Formatter {
     @Override
     public String format(List<DiffEntry> entries) {
         StringBuilder result = new StringBuilder("{\n");

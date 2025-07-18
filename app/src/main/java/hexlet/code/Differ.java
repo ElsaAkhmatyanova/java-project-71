@@ -15,8 +15,7 @@ public class Differ {
         return getFormattedDiff(diffEntryList, format);
     }
 
-    public static String generate(String filepath1, String filepath2)
-            throws Exception {
+    public static String generate(String filepath1, String filepath2) throws Exception {
         return generate(filepath1, filepath2, "stylish");
     }
 

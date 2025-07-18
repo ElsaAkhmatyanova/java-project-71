@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.DiffEntry;
 import java.util.List;
 
-public class JsonFormat implements Formatter {
+public final class JsonFormat implements Formatter {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Override
