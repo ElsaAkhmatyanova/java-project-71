@@ -10,7 +10,9 @@ import java.util.Map;
 
 public class Differ {
     public static String generate(String filepath1, String filepath2, String format) throws Exception {
-        if (format == null || format.isEmpty()) return generate(filepath1, filepath2);
+        if (format == null || format.isEmpty()) {
+            return generate(filepath1, filepath2);
+        }
         String content1 = Files.readString(Path.of(filepath1));
         String contentType1 = filepath1.substring(filepath1.lastIndexOf('.') + 1);
 
