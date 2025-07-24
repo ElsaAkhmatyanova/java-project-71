@@ -69,7 +69,6 @@ class DifferTest {
                 getResourseFilePath(path2).toAbsolutePath().normalize().toString(),
                 format
         );
-        assertEquals(expected.replace("\r\n", "\n").trim(),
-                actual.replace("\r\n", "\n").trim());
+        assertEquals(expected.trim(), actual.trim());
     }
 }
